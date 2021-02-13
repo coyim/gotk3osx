@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test-osx:
-    runs-on: macosx-latest
+    runs-on: macos-latest
 
     env:
       GOPATH: ${{ github.workspace }}
