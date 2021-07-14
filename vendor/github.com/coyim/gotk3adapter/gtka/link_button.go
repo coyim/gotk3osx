@@ -6,22 +6,22 @@ import (
 )
 
 type linkButton struct {
-	*bin
+	*button
 	internal *gtk.LinkButton
 }
 
-func wrapLinkButtonSimple(v *gtk.LinkButton) *linkButton {
+func WrapLinkButtonSimple(v *gtk.LinkButton) gtki.LinkButton {
 	if v == nil {
 		return nil
 	}
-	return &linkButton{wrapBinSimple(&v.Bin), v}
+	return &linkButton{WrapButtonSimple(&v.Button).(*button), v}
 }
 
-func wrapLinkButton(v *gtk.LinkButton, e error) (*linkButton, error) {
-	return wrapLinkButtonSimple(v), e
+func WrapLinkButton(v *gtk.LinkButton, e error) (gtki.LinkButton, error) {
+	return WrapLinkButtonSimple(v), e
 }
 
-func unwrapLinkButton(v gtki.LinkButton) *gtk.LinkButton {
+func UnwrapLinkButton(v gtki.LinkButton) *gtk.LinkButton {
 	if v == nil {
 		return nil
 	}
@@ -37,5 +37,13 @@ func (v *linkButton) SetUri(uri string) {
 }
 
 func (v *linkButton) SetImage(v1 gtki.Widget) {
-	v.internal.SetImage(unwrapWidget(v1))
+	v.internal.SetImage(UnwrapWidget(v1))
+}
+
+func (v *linkButton) GetLabel() (string, error) {
+	return v.internal.GetLabel()
+}
+
+func (v *linkButton) SetLabel(v1 string) {
+	v.internal.SetLabel(v1)
 }

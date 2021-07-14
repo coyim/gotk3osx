@@ -3,6 +3,8 @@ package gtki
 type TreeView interface {
 	Container
 
+	RowExpanded(TreePath) bool
+	ExpandRow(TreePath, bool) bool
 	CollapseRow(TreePath) bool
 	ExpandAll()
 	GetCursor() (TreePath, TreeViewColumn)
@@ -17,6 +19,7 @@ type TreeView interface {
 	SetSearchEqualSubstringMatch()
 	GetModel() (TreeModel, error)
 	SetModel(TreeModel)
+	SetCursorOnCell(TreePath, TreeViewColumn, CellRenderer, bool)
 }
 
 func AssertTreeView(_ TreeView) {}

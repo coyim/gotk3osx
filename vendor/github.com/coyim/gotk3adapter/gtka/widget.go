@@ -5,6 +5,7 @@ import (
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/gliba"
 	"github.com/coyim/gotk3adapter/gtki"
+	"github.com/coyim/gotk3extra"
 	"github.com/gotk3/gotk3/gtk"
 )
 
@@ -21,18 +22,18 @@ func (v *widget) toWidget() *widget {
 	return v
 }
 
-func wrapWidgetSimple(v *gtk.Widget) *widget {
+func WrapWidgetSimple(v *gtk.Widget) gtki.Widget {
 	if v == nil {
 		return nil
 	}
 	return &widget{gliba.WrapObjectSimple(v.Object), v}
 }
 
-func wrapWidget(v *gtk.Widget, e error) (*widget, error) {
-	return wrapWidgetSimple(v), e
+func WrapWidget(v *gtk.Widget, e error) (gtki.Widget, error) {
+	return WrapWidgetSimple(v), e
 }
 
-func unwrapWidget(v gtki.Widget) *gtk.Widget {
+func UnwrapWidget(v gtki.Widget) *gtk.Widget {
 	if v == nil {
 		return nil
 	}
@@ -47,8 +48,20 @@ func (v *widget) SetHExpand(v1 bool) {
 	v.internal.SetHExpand(v1)
 }
 
+func (v *widget) SetVExpand(v1 bool) {
+	v.internal.SetVExpand(v1)
+}
+
 func (v *widget) SetSensitive(v1 bool) {
 	v.internal.SetSensitive(v1)
+}
+
+func (v *widget) IsSensitive() bool {
+	return v.internal.IsSensitive()
+}
+
+func (v *widget) SetOpacity(v2 float64) {
+	v.internal.SetOpacity(v2)
 }
 
 func (v *widget) SetTooltipText(text string) {
@@ -91,9 +104,18 @@ func (v *widget) GetAllocatedWidth() int {
 	return v.internal.GetAllocatedWidth()
 }
 
+func (v *widget) GetName() (string, error) {
+	return v.internal.GetName()
+}
+
 func (v *widget) GetParent() (gtki.Widget, error) {
 	parent, err := v.internal.GetParent()
-	return wrapWidget(parent, err)
+	return WrapWidget(parent, err)
+}
+
+func (v *widget) GetParentX() (gtki.Widget, error) {
+	parent, err := gotk3extra.GetParent(v.internal)
+	return Wrap(parent).(gtki.Widget), err
 }
 
 func (v *widget) GrabFocus() {
@@ -129,11 +151,15 @@ func (v *widget) GetWindow() (gdki.Window, error) {
 }
 
 func (v *widget) GetStyleContext() (gtki.StyleContext, error) {
-	return wrapStyleContext(v.internal.GetStyleContext())
+	return WrapStyleContext(v.internal.GetStyleContext())
 }
 
 func (v *widget) SetHAlign(v2 gtki.Align) {
 	v.internal.SetHAlign(gtk.Align(v2))
+}
+
+func (v *widget) SetVAlign(v2 gtki.Align) {
+	v.internal.SetVAlign(gtk.Align(v2))
 }
 
 func (v *widget) Destroy() {

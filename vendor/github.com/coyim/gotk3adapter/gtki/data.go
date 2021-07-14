@@ -102,3 +102,22 @@ var (
 	STYLE_PROVIDER_PRIORITY_APPLICATION StyleProviderPriority
 	STYLE_PROVIDER_PRIORITY_USER        StyleProviderPriority
 )
+
+type MessageType int
+
+var (
+	MESSAGE_INFO     MessageType
+	MESSAGE_WARNING  MessageType
+	MESSAGE_QUESTION MessageType
+	MESSAGE_ERROR    MessageType
+	MESSAGE_OTHER    MessageType
+)
+
+type Justification int
+
+var (
+	JUSTIFY_LEFT   Justification
+	JUSTIFY_RIGHT  Justification
+	JUSTIFY_CENTER Justification
+	JUSTIFY_FILL   Justification
+)

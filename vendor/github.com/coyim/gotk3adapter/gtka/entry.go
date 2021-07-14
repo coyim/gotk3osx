@@ -10,18 +10,18 @@ type entry struct {
 	internal *gtk.Entry
 }
 
-func wrapEntrySimple(v *gtk.Entry) *entry {
+func WrapEntrySimple(v *gtk.Entry) gtki.Entry {
 	if v == nil {
 		return nil
 	}
-	return &entry{wrapWidgetSimple(&v.Widget), v}
+	return &entry{WrapWidgetSimple(&v.Widget).(*widget), v}
 }
 
-func wrapEntry(v *gtk.Entry, e error) (*entry, error) {
-	return wrapEntrySimple(v), e
+func WrapEntry(v *gtk.Entry, e error) (gtki.Entry, error) {
+	return WrapEntrySimple(v), e
 }
 
-func unwrapEntry(v gtki.Entry) *gtk.Entry {
+func UnwrapEntry(v gtki.Entry) *gtk.Entry {
 	if v == nil {
 		return nil
 	}
@@ -34,6 +34,10 @@ func (v *entry) GetText() (string, error) {
 
 func (v *entry) SetHasFrame(v1 bool) {
 	v.internal.SetHasFrame(v1)
+}
+
+func (v *entry) GetVisibility() bool {
+	return v.internal.GetVisibility()
 }
 
 func (v *entry) SetVisibility(v1 bool) {
@@ -65,4 +69,12 @@ func (v *entry) SetPosition(p int) {
 
 func (v *entry) GetPosition() int {
 	return v.internal.GetPosition()
+}
+
+func (v *entry) SetCompletion(v1 gtki.EntryCompletion) {
+	v.internal.SetCompletion(UnwrapEntryCompletion(v1))
+}
+
+func (v *entry) SetPlaceholderText(v1 string) {
+	v.internal.SetPlaceholderText(v1)
 }

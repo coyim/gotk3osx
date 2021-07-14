@@ -10,18 +10,18 @@ type button struct {
 	internal *gtk.Button
 }
 
-func wrapButtonSimple(v *gtk.Button) *button {
+func WrapButtonSimple(v *gtk.Button) gtki.Button {
 	if v == nil {
 		return nil
 	}
-	return &button{wrapBinSimple(&v.Bin), v}
+	return &button{WrapBinSimple(&v.Bin).(*bin), v}
 }
 
-func wrapButton(v *gtk.Button, e error) (*button, error) {
-	return wrapButtonSimple(v), e
+func WrapButton(v *gtk.Button, e error) (gtki.Button, error) {
+	return WrapButtonSimple(v), e
 }
 
-func unwrapButton(v gtki.Button) *gtk.Button {
+func UnwrapButton(v gtki.Button) *gtk.Button {
 	if v == nil {
 		return nil
 	}
@@ -29,5 +29,13 @@ func unwrapButton(v gtki.Button) *gtk.Button {
 }
 
 func (v *button) SetImage(v1 gtki.Widget) {
-	v.internal.SetImage(unwrapWidget(v1))
+	v.internal.SetImage(UnwrapWidget(v1))
+}
+
+func (v *button) GetLabel() (string, error) {
+	return v.internal.GetLabel()
+}
+
+func (v *button) SetLabel(v1 string) {
+	v.internal.SetLabel(v1)
 }
