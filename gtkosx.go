@@ -14,6 +14,7 @@ import "github.com/gotk3/gotk3/gdk"
 import "github.com/gotk3/gotk3/gtk"
 import "unsafe"
 import "errors"
+import "github.com/coyim/gotk3osx/access"
 
 func init() {
 	tm := []glib.TypeMarshaler{
@@ -82,6 +83,15 @@ func GetGtkosxApplication() (*GtkosxApplication, error) {
 	return wrapGtkosxApplication(glib.Take(unsafe.Pointer(c))), nil
 }
 
+type real struct{}
+
+var Real = &real{}
+
+// GetApplication implements access interfaces
+func (*real) GetApplication() (access.Application, error) {
+	return GetGtkosxApplication()
+}
+
 // Ready informs Cocoa that application initialization is complete.
 func (v *GtkosxApplication) Ready() {
 	C.gtkosx_application_ready(v.native())
@@ -98,7 +108,7 @@ func (v *GtkosxApplication) UseQuartzAccelerators() bool {
 }
 
 // SetMenuBar sets a window's menubar as the application menu bar. Call this once for each window as you create them. It works best if the menubar is reasonably fully populated before you call it. Once set, it will stay syncronized through signals as long as you don't disconnect or block them.
-func (v *GtkosxApplication) SetMenuBar(menuShell *gtk.MenuShell) {
+func (v *GtkosxApplication) SetMenuBarReal(menuShell *gtk.MenuShell) {
 	C.gtkosx_application_set_menu_bar(v.native(), nativeMenuShell(menuShell))
 }
 
@@ -108,17 +118,17 @@ func (v *GtkosxApplication) SyncMenuBar() {
 }
 
 // InsertAppMenuItem will insert a menu item in the a app menu
-func (v *GtkosxApplication) InsertAppMenuItem(menuItem *gtk.Widget, index int) {
+func (v *GtkosxApplication) InsertAppMenuItemReal(menuItem *gtk.Widget, index int) {
 	C.gtkosx_application_insert_app_menu_item(v.native(), nativeWidget(menuItem), (C.gint)(index))
 }
 
 // SetWindowMenu sets a designated menu item already on the menu bar as the Window menu. This is the menu which contains a list of open windows for the application; by default it also provides menu items to minimize and zoom the current window and to bring all windows to the front. Call this after gtk_osx_application_set_menu_bar(). It operates on the currently active menubar. If nenu_item is NULL, it will create a new menu for you, which will not be gettext translatable.
-func (v *GtkosxApplication) SetWindowMenu(menuItem *gtk.MenuItem) {
+func (v *GtkosxApplication) SetWindowMenuReal(menuItem *gtk.MenuItem) {
 	C.gtkosx_application_set_window_menu(v.native(), nativeMenuItem(menuItem))
 }
 
 // SetHelpMenu sets a designated menu item already on the menu bar as the Help menu. Call this after gtk_osx_application_set_menu_bar(), but before gtk_osx_application_window_menu(), especially if you're letting GtkosxApplication create a Window menu for you (it helps position the Window menu correctly). It operates on the currently active menubar. If nenu_item is NULL, it will create a new menu for you, which will not be gettext translatable.
-func (v *GtkosxApplication) SetHelpMenu(menuItem *gtk.MenuItem) {
+func (v *GtkosxApplication) SetHelpMenuReal(menuItem *gtk.MenuItem) {
 	C.gtkosx_application_set_help_menu(v.native(), nativeMenuItem(menuItem))
 }
 
@@ -128,7 +138,7 @@ func (v *GtkosxApplication) SetDockMenu(menuItem *gtk.MenuShell) {
 }
 
 // SetDockIconPixbuf sets the dock icon from a GdkPixbuf
-func (v *GtkosxApplication) SetDockIconPixbuf(pixbuf *gdk.Pixbuf) {
+func (v *GtkosxApplication) SetDockIconPixbufReal(pixbuf *gdk.Pixbuf) {
 	C.gtkosx_application_set_dock_icon_pixbuf(v.native(), nativePixbuf(pixbuf))
 }
 
