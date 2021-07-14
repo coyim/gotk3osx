@@ -13,5 +13,5 @@ type Application interface {
 	InsertAppMenuItem(gtki.Widget, int)
 	SetMenuBar(gtki.MenuShell)
 	SetHelpMenu(gtki.MenuItem)
-	SetWindowMenuReal(gtki.MenuItem)
+	SetWindowMenu(gtki.MenuItem)
 }
