@@ -15,6 +15,10 @@ import "github.com/gotk3/gotk3/gtk"
 import "unsafe"
 import "errors"
 import "github.com/coyim/gotk3osx/access"
+import "github.com/coyim/gotk3adapter/gdki"
+import "github.com/coyim/gotk3adapter/gdka"
+import "github.com/coyim/gotk3adapter/gtki"
+import "github.com/coyim/gotk3adapter/gtka"
 
 func init() {
 	tm := []glib.TypeMarshaler{
